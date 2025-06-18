@@ -7,11 +7,11 @@ spec:
   project: default
   source:
     repoURL: https://github.com/GoormPlay/cluster-config.git
-    targetRevision: HEAD
+    targetRevision: main
     path: global-config
   destination:
     server: https://kubernetes.default.svc
-    namespace: apigateway  # 어느 네임스페이스든 상관없음 (그 자체에 배포 X)
+    namespace: config  # 어느 네임스페이스든 상관없음 (그 자체에 배포 X)
   syncPolicy:
     automated:
       selfHeal: true
