@@ -1,25 +1,27 @@
-name: Deploy Config to ArgoCD
+name: Deploy Global Secrets to ArgoCD
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
     paths:
+      - global-secret/**
       - argocd/application.yaml
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Kubeconfig
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ IRSA_ROLE }}
+          aws-region: ap-northeast-2
+
+      - name: Update Kubeconfig
         run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > ~/.kube/config
-          chmod 600 ~/.kube/config
+          aws eks update-kubeconfig --name ${{ EKS_CLUSTER_NAME }} --region ap-northeast-2
 
       - name: Apply ArgoCD Application
         run: |
