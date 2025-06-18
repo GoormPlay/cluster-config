@@ -16,12 +16,12 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ IRSA_ROLE }}
+          role-to-assume: ${{ secrets.IRSA_ROLE }}
           aws-region: ap-northeast-2
 
       - name: Update Kubeconfig
         run: |
-          aws eks update-kubeconfig --name ${{ EKS_CLUSTER_NAME }} --region ap-northeast-2
+          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ap-northeast-2
 
       - name: Apply ArgoCD Application
         run: |
