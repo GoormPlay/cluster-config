@@ -1,0 +1,26 @@
+name: Deploy Config to ArgoCD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - argocd/application.yaml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Apply ArgoCD Application
+        run: |
+          kubectl apply -f argocd/application.yaml
