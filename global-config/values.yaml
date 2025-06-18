@@ -1,0 +1,11 @@
+namespaces:
+  - apigateway
+  - auth
+  - member
+  - content
+  - indexing
+  - subscribe
+  - ui
+  - review
+  - ad
+  - ad-admin
